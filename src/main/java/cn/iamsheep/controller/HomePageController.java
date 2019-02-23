@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import javax.annotation.PostConstruct;
 
@@ -65,7 +66,14 @@ public class HomePageController implements UIHandler {
 
     @Override
     public void resize() {
-
+        Stage stage = Factory.UIData.getStage();
+        if(stage.isFullScreen()){
+            console.setStyle("-fx-font-size:36px");
+        }else if(stage.isMaximized()){
+            console.setStyle("-fx-font-size:36px");
+        }else {
+            console.setStyle("-fx-font-size:16px");
+        }
     }
 
     @Override
