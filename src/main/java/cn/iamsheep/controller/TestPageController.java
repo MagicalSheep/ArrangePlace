@@ -63,6 +63,7 @@ public class TestPageController implements UIHandler {
         sync.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> new Thread(() -> {
             try {
                 testGroup.sync(Factory.mode);
+                sync();
             } catch (Exception e) {
                 Platform.runLater(() -> showDialog("Exception", e.getMessage()));
             }

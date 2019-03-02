@@ -1,8 +1,6 @@
 package cn.iamsheep;
 
-import cn.iamsheep.api.Factory;
 import cn.iamsheep.util.Mode;
-import javafx.application.Platform;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -117,8 +115,7 @@ public class Group implements Serializable {
      */
     public synchronized void sync(Mode mode) {
         Random random = new Random();
-        ArrayList<String> name = new ArrayList<>();
-        name.addAll(this.studentsName);
+        ArrayList<String> name = new ArrayList<>(this.studentsName);
         switch (mode) {
             case NINE:
                 syncWithNineProtect(random, name);
@@ -127,7 +124,6 @@ public class Group implements Serializable {
                 syncWithGroupProtect(random, name);
                 break;
         }
-        Platform.runLater(() -> Factory.UI.getCurrentPage().sync());
     }
 
     private void syncWithNineProtect(Random random, ArrayList<String> name) {
@@ -142,14 +138,16 @@ public class Group implements Serializable {
         for (int i = 0; i < place.length; i++) {
             for (int j = 0; j < place[i].length; j++) {
                 if (i == 5 && j == 8) continue;
+                int count = 0;
                 while (!name.isEmpty()) {
                     ranIndex = random.nextInt(name.size());
                     ranName = name.get(ranIndex);
-                    if (!isEqualsOneof(ranName, getLastNameList(new Position(i, j)))) {
+                    if (!isEqualsOneof(ranName, getLastNameList(new Position(i, j))) || count == 100) {
                         tempPlace[i][j] = ranName;
                         name.remove(ranIndex);
                         break;
                     }
+                    count++;
                 }
             }
         }
@@ -165,6 +163,7 @@ public class Group implements Serializable {
         }
         String ranName;
         int ranIndex;
+        int count = 0;
         for (int i = 0; i < place.length; i++) {
             for (int j = 0; j < place[i].length; j++) {
                 int groupNum = j % 3;
@@ -172,11 +171,12 @@ public class Group implements Serializable {
                 while (!name.isEmpty()) {
                     ranIndex = random.nextInt(name.size());
                     ranName = name.get(ranIndex);
-                    if (groupNum != (getPositionFromName(ranName).getY() % 3)){
+                    if (groupNum != (getPositionFromName(ranName).getY() % 3) || count == 100) {
                         tempPlace[i][j] = ranName;
                         name.remove(ranIndex);
                         break;
                     }
+                    count++;
                 }
             }
         }
@@ -200,6 +200,24 @@ public class Group implements Serializable {
             } else {
                 throw new ExchangeException("调换座位的条件不符合！");
             }
+        } else {
+            throw new ExchangeException("该学生不存在!");
+        }
+    }
+
+    /**
+     * 强制调换座位
+     *
+     * @param nameOne 名字1
+     * @param nameTwo 名字2
+     * @throws ExchangeException
+     */
+    public void adminExchange(String nameOne, String nameTwo) throws ExchangeException {
+        if (isExistStudent(nameOne) && isExistStudent(nameTwo)) {
+            Position one = getPositionFromName(nameOne);
+            Position two = getPositionFromName(nameTwo);
+            place[one.getX()][one.getY()] = nameTwo;
+            place[two.getX()][two.getY()] = nameOne;
         } else {
             throw new ExchangeException("该学生不存在!");
         }

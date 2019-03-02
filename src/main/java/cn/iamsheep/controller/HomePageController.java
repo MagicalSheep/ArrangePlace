@@ -59,9 +59,7 @@ public class HomePageController implements UIHandler {
 
         sync.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showPasswordDialog());
         backup.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showDialog("提示", "功能未完成！"));
-        exchange.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            showExchangeDialog();
-        });
+        exchange.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showExchangeDialog());
     }
 
     @Override
@@ -124,6 +122,7 @@ public class HomePageController implements UIHandler {
         try {
             Factory.group.sync(Factory.mode);
             Factory.UIData.savePlace(Factory.group);
+            sync();
         } catch (Exception e) {
             showDialog("Exception", e.getMessage());
         }

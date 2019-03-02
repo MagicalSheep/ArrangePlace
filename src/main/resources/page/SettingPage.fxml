@@ -9,7 +9,7 @@
     <VBox spacing="20" alignment="CENTER">
         <Label styleClass="title-label">生成模式</Label>
         <JFXCheckBox fx:id="nine" text="九宫格保护" style="-fx-font-size:24px"></JFXCheckBox>
-        <JFXCheckBox fx:id="group" text="分组保护" style="-fx-font-size:24px"></JFXCheckBox>
+        <JFXCheckBox fx:id="group" text="分组保护　" style="-fx-font-size:24px"></JFXCheckBox>
     </VBox>
 
 </StackPane>
