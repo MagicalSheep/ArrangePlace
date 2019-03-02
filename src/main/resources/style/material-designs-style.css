@@ -15,7 +15,8 @@
 }
 
 .title-label {
-    -fx-font-size: 32.0px;
+    -fx-font-size: 42.0px;
+    -fx-font-weight: BOLD;
     -fx-padding: 24.0px;
     -fx-text-fill: rgba(0.0, 0.0, 0.0, 0.87);
 }

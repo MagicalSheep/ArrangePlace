@@ -18,9 +18,9 @@
             </center>
             <right>
                 <VBox spacing="20" style="-fx-padding: 0 0 0 30;">
-                    <JFXButton fx:id="connect" prefWidth="180" prefHeight="50" buttonType="RAISED" text="生成新座位表"
+                    <JFXButton fx:id="sync" prefWidth="180" prefHeight="50" buttonType="RAISED" text="生成测试座位表"
                                style="-fx-text-fill:WHITE;-fx-background-color:#008577;-fx-font-size:16px;"/>
-                    <JFXButton prefWidth="180" prefHeight="50" buttonType="RAISED" text="查看备份座位表"
+                    <JFXButton fx:id="reset" prefWidth="180" prefHeight="50" buttonType="RAISED" text="重置"
                                style="-fx-font-size:14px;-fx-background-color:WHITE;"/>
                 </VBox>
             </right>

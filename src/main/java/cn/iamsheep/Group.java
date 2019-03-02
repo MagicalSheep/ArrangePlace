@@ -1,5 +1,7 @@
 package cn.iamsheep;
 
+import cn.iamsheep.util.Mode;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
@@ -74,6 +76,25 @@ public class Group implements Serializable {
     }
 
     /**
+     * 获取上一次该组内所有的学生名单
+     *
+     * @param position 座位的坐标对象
+     * @return ArrayList<String>
+     */
+    private ArrayList<String> getLastGroupNameList(Position position) {
+        int x = position.getX();
+        int y = position.getY();
+        ArrayList<String> result = new ArrayList<>();
+        for (int i = 0; i < place.length; i++) {
+            for (int j = 0; j < place[i].length; j++) {
+                if (i == x && j == y) break;
+                if ((j % 3) == (y % 3)) result.add(place[i][j]);
+            }
+        }
+        return result;
+    }
+
+    /**
      * 判断该名字是否等于名单中的其中一个名字
      *
      * @param name     要判断的名字
@@ -89,11 +110,24 @@ public class Group implements Serializable {
 
     /**
      * 刷新座位表
+     *
+     * @param mode 刷新模式
      */
-    public void sync() {
+    public void sync(Mode mode) {
         Random random = new Random();
         ArrayList<String> name = new ArrayList<>();
         name.addAll(this.studentsName);
+        switch (mode) {
+            case NINE:
+                syncWithNineProtect(random, name);
+                break;
+            case GROUP:
+                syncWithGroupProtect(random, name);
+                break;
+        }
+    }
+
+    private void syncWithNineProtect(Random random, ArrayList<String> name) {
         String ranName;
         int ranIndex;
         for (int i = 0; i < place.length; i++) {
@@ -103,6 +137,25 @@ public class Group implements Serializable {
                     ranIndex = random.nextInt(name.size());
                     ranName = name.get(ranIndex);
                     if (!isEqualsOneof(ranName, getLastNameList(new Position(i, j)))) {
+                        place[i][j] = ranName;
+                        name.remove(ranIndex);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private void syncWithGroupProtect(Random random, ArrayList<String> name) {
+        String ranName;
+        int ranIndex;
+        for (int i = 0; i < place.length; i++) {
+            for (int j = 0; j < place[i].length; j++) {
+                if (i == 5 && j == 8) continue;
+                while (!name.isEmpty()) {
+                    ranIndex = random.nextInt(name.size());
+                    ranName = name.get(ranIndex);
+                    if (!isEqualsOneof(ranName, getLastGroupNameList(new Position(i, j)))) {
                         place[i][j] = ranName;
                         name.remove(ranIndex);
                         break;
@@ -166,9 +219,10 @@ public class Group implements Serializable {
     /**
      * 调换座位的异常类
      */
-    class ExchangeException extends Exception {
+    public class ExchangeException extends Exception {
         ExchangeException(String message) {
             super(message);
         }
     }
+
 }

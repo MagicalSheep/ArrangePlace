@@ -1,5 +1,6 @@
 package cn.iamsheep.controller;
 
+import cn.iamsheep.Group;
 import cn.iamsheep.api.Factory;
 import cn.iamsheep.api.UIHandler;
 import com.jfoenix.controls.JFXButton;
@@ -7,7 +8,9 @@ import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTextArea;
 import io.datafx.controller.ViewController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -26,32 +29,61 @@ public class TestPageController implements UIHandler {
     @FXML
     private JFXTextArea console;
     @FXML
-    private JFXButton connect;
+    private JFXButton sync;
+    @FXML
+    private JFXButton reset;
     @FXML
     private BorderPane container;
 
+    private Group testGroup;
+
     @PostConstruct
-    public void init() {
+    public void init() throws Exception {
         Factory.UIData.regPage(this);
         AnchorPane.setLeftAnchor(container, Factory.UIData.LRSpacing);
         AnchorPane.setRightAnchor(container, Factory.UIData.LRSpacing);
         AnchorPane.setTopAnchor(container, Factory.UIData.TBSpacing);
         AnchorPane.setBottomAnchor(container, Factory.UIData.TBSpacing);
 
-        AnchorPane.setLeftAnchor(console,Factory.UIData.LRSpacing-15);
-        AnchorPane.setRightAnchor(console, Factory.UIData.LRSpacing-15);
-        AnchorPane.setTopAnchor(console, Factory.UIData.TBSpacing-15);
-        AnchorPane.setBottomAnchor(console, Factory.UIData.TBSpacing-15);
+        AnchorPane.setLeftAnchor(console, Factory.UIData.LRSpacing - 15);
+        AnchorPane.setRightAnchor(console, Factory.UIData.LRSpacing - 15);
+        AnchorPane.setTopAnchor(console, Factory.UIData.TBSpacing - 15);
+        AnchorPane.setBottomAnchor(console, Factory.UIData.TBSpacing - 15);
 
         container.setMaxWidth(Factory.UIData.getScreenWidth());
         container.setMaxHeight(Factory.UIData.getScreenHeight());
 
-        console.textProperty().bind(Factory.UIData.getConsoleInfo());
+        testGroup = Factory.UIData.readPlace();
+        console.textProperty().bind(Factory.UIData.getTestConsoleInfo());
+        Factory.UIData.clearTestConsoleInfo();
+        resize();
+        Factory.UI.testPrint(Factory.group);
+
+        sync.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> new Thread(() -> {
+            Factory.UIData.clearTestConsoleInfo();
+            try {
+                testGroup.sync(Factory.mode);
+                Factory.UI.testPrint(testGroup);
+            } catch (Exception e) {
+                Platform.runLater(() -> showDialog("Exception", e.getMessage()));
+            }
+        }).start());
+
+        reset.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                testGroup = Factory.UIData.readPlace();
+            } catch (Exception e) {
+                showDialog("Exception", e.getMessage());
+            }
+            Factory.UIData.clearTestConsoleInfo();
+            Factory.UI.testPrint(testGroup);
+        });
     }
 
     @Override
     public void resize() {
-
+        int size = (int) Factory.UIData.getScreenWidth() / 55;
+        console.setStyle("-fx-font-size:" + size + "px");
     }
 
     @Override

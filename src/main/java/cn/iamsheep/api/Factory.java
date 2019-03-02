@@ -2,6 +2,7 @@ package cn.iamsheep.api;
 
 import cn.iamsheep.Group;
 import cn.iamsheep.controller.Frame;
+import cn.iamsheep.util.Mode;
 import cn.iamsheep.util.UnicodeReader;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,6 +21,9 @@ public class Factory {
     private static Stage stage;
     private static UIHandler currentPage = null;
     private static StringProperty consoleInfo;
+    private static StringProperty testConsoleInfo;
+
+    public static Mode mode = Mode.NINE;
 
     public static Group group = null;
 
@@ -28,6 +32,7 @@ public class Factory {
 
     static {
         consoleInfo = new SimpleStringProperty("");
+        testConsoleInfo = new SimpleStringProperty("");
     }
 
     public static class UIData {
@@ -63,7 +68,11 @@ public class Factory {
             consoleInfo.setValue("");
         }
 
-        public static void setStage(Stage stage1){
+        public static void clearTestConsoleInfo() {
+            testConsoleInfo.setValue("");
+        }
+
+        public static void setStage(Stage stage1) {
             stage = stage1;
         }
 
@@ -74,6 +83,10 @@ public class Factory {
          */
         public static StringProperty getConsoleInfo() {
             return consoleInfo;
+        }
+
+        public static StringProperty getTestConsoleInfo() {
+            return testConsoleInfo;
         }
 
         public static Stage getStage() {
@@ -151,8 +164,16 @@ public class Factory {
             Platform.runLater(() -> consoleInfo.setValue(consoleInfo.getValue() + msg + "\n"));
         }
 
+        public static void testPrintln(String msg) {
+            Platform.runLater(() -> testConsoleInfo.setValue(testConsoleInfo.getValue() + msg + "\n"));
+        }
+
         public static void print(String msg) {
             Platform.runLater(() -> consoleInfo.setValue(consoleInfo.getValue() + msg));
+        }
+
+        public static void testPrint(String msg) {
+            Platform.runLater(() -> testConsoleInfo.setValue(testConsoleInfo.getValue() + msg));
         }
 
         public static void print(Group group) {
@@ -160,11 +181,23 @@ public class Factory {
             for (String[] strings : place) {
                 for (int j = 0; j < strings.length; j++) {
                     print(strings[j] + "　");
-                    if (((j + 1) % 3 == 0)) Factory.UI.print("　　");
+                    if (((j + 1) % 3 == 0)) print("　　");
                 }
                 print("\n");
             }
             print("\n");
+        }
+
+        public static void testPrint(Group group) {
+            String[][] place = group.getPlace();
+            for (String[] strings : place) {
+                for (int j = 0; j < strings.length; j++) {
+                    testPrint(strings[j] + "　");
+                    if (((j + 1) % 3 == 0)) testPrint("　　");
+                }
+                testPrint("\n");
+            }
+            testPrint("\n");
         }
 
         /**
