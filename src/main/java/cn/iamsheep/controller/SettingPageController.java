@@ -32,6 +32,14 @@ public class SettingPageController implements UIHandler {
     @PostConstruct
     public void init() {
         Factory.UIData.regPage(this);
+        switch (Factory.mode){
+            case NINE:
+                nine.setSelected(true);
+                break;
+            case GROUP:
+                group.setSelected(true);
+                break;
+        }
         nine.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             group.setSelected(false);
             Factory.mode = Mode.NINE;
@@ -49,6 +57,11 @@ public class SettingPageController implements UIHandler {
 
     @Override
     public void release() {
+    }
+
+    @Override
+    public void sync() {
+
     }
 
     @Override

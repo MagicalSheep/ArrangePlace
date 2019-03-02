@@ -6,5 +6,6 @@ package cn.iamsheep.api;
 public interface UIHandler {
     void resize();
     void release();
+    void sync();
     void showDialog(String heading, String body);
 }

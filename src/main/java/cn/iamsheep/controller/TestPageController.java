@@ -55,15 +55,14 @@ public class TestPageController implements UIHandler {
 
         testGroup = Factory.UIData.readPlace();
         console.textProperty().bind(Factory.UIData.getTestConsoleInfo());
-        Factory.UIData.clearTestConsoleInfo();
+
+        testGroup = Factory.UIData.readPlace();
         resize();
-        Factory.UI.testPrint(Factory.group);
+        sync();
 
         sync.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> new Thread(() -> {
-            Factory.UIData.clearTestConsoleInfo();
             try {
                 testGroup.sync(Factory.mode);
-                Factory.UI.testPrint(testGroup);
             } catch (Exception e) {
                 Platform.runLater(() -> showDialog("Exception", e.getMessage()));
             }
@@ -72,11 +71,10 @@ public class TestPageController implements UIHandler {
         reset.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
                 testGroup = Factory.UIData.readPlace();
+                sync();
             } catch (Exception e) {
                 showDialog("Exception", e.getMessage());
             }
-            Factory.UIData.clearTestConsoleInfo();
-            Factory.UI.testPrint(testGroup);
         });
     }
 
@@ -89,6 +87,12 @@ public class TestPageController implements UIHandler {
     @Override
     public void release() {
 
+    }
+
+    @Override
+    public void sync() {
+        Factory.UIData.clearTestConsoleInfo();
+        Factory.UI.testPrint(testGroup);
     }
 
     @Override

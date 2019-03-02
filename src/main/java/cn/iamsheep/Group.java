@@ -1,6 +1,8 @@
 package cn.iamsheep;
 
+import cn.iamsheep.api.Factory;
 import cn.iamsheep.util.Mode;
+import javafx.application.Platform;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -113,7 +115,7 @@ public class Group implements Serializable {
      *
      * @param mode 刷新模式
      */
-    public void sync(Mode mode) {
+    public synchronized void sync(Mode mode) {
         Random random = new Random();
         ArrayList<String> name = new ArrayList<>();
         name.addAll(this.studentsName);
@@ -125,9 +127,16 @@ public class Group implements Serializable {
                 syncWithGroupProtect(random, name);
                 break;
         }
+        Platform.runLater(() -> Factory.UI.getCurrentPage().sync());
     }
 
     private void syncWithNineProtect(Random random, ArrayList<String> name) {
+        String[][] tempPlace = new String[7][9];
+        for (int i = 0; i < tempPlace.length; i++) {
+            for (int j = 0; j < tempPlace[i].length; j++) {
+                tempPlace[i][j] = "　　　";
+            }
+        }
         String ranName;
         int ranIndex;
         for (int i = 0; i < place.length; i++) {
@@ -137,32 +146,41 @@ public class Group implements Serializable {
                     ranIndex = random.nextInt(name.size());
                     ranName = name.get(ranIndex);
                     if (!isEqualsOneof(ranName, getLastNameList(new Position(i, j)))) {
-                        place[i][j] = ranName;
+                        tempPlace[i][j] = ranName;
                         name.remove(ranIndex);
                         break;
                     }
                 }
             }
         }
+        place = tempPlace;
     }
 
     private void syncWithGroupProtect(Random random, ArrayList<String> name) {
+        String[][] tempPlace = new String[7][9];
+        for (int i = 0; i < tempPlace.length; i++) {
+            for (int j = 0; j < tempPlace[i].length; j++) {
+                tempPlace[i][j] = "　　　";
+            }
+        }
         String ranName;
         int ranIndex;
         for (int i = 0; i < place.length; i++) {
             for (int j = 0; j < place[i].length; j++) {
+                int groupNum = j % 3;
                 if (i == 5 && j == 8) continue;
                 while (!name.isEmpty()) {
                     ranIndex = random.nextInt(name.size());
                     ranName = name.get(ranIndex);
-                    if (!isEqualsOneof(ranName, getLastGroupNameList(new Position(i, j)))) {
-                        place[i][j] = ranName;
+                    if (groupNum != (getPositionFromName(ranName).getY() % 3)){
+                        tempPlace[i][j] = ranName;
                         name.remove(ranIndex);
                         break;
                     }
                 }
             }
         }
+        place = tempPlace;
     }
 
     /**

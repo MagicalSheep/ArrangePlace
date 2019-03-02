@@ -53,13 +53,15 @@ public class HomePageController implements UIHandler {
         container.setMaxHeight(Factory.UIData.getScreenHeight());
 
         console.textProperty().bind(Factory.UIData.getConsoleInfo());
-        Factory.UIData.clearConsoleInfo();
+
         resize();
-        Factory.UI.print(Factory.group);
+        sync();
 
         sync.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showPasswordDialog());
         backup.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showDialog("提示", "功能未完成！"));
-        exchange.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showExchangeDialog());
+        exchange.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            showExchangeDialog();
+        });
     }
 
     @Override
@@ -70,7 +72,12 @@ public class HomePageController implements UIHandler {
 
     @Override
     public void release() {
+    }
 
+    @Override
+    public void sync() {
+        Factory.UIData.clearConsoleInfo();
+        Factory.UI.print(Factory.group);
     }
 
     @Override
@@ -114,11 +121,9 @@ public class HomePageController implements UIHandler {
      */
     private void continueToSync() {
         password = "";
-        Factory.UIData.clearConsoleInfo();
         try {
             Factory.group.sync(Factory.mode);
             Factory.UIData.savePlace(Factory.group);
-            Factory.UI.print(Factory.group);
         } catch (Exception e) {
             showDialog("Exception", e.getMessage());
         }
@@ -148,8 +153,7 @@ public class HomePageController implements UIHandler {
                     Factory.group.exchange(nameOne, nameTwo);
                     Platform.runLater(() -> showDialog("提示", "座位调换成功！"));
                     Factory.UIData.savePlace(Factory.group);
-                    Factory.UIData.clearConsoleInfo();
-                    Factory.UI.print(Factory.group);
+                    sync();
                 } catch (Group.ExchangeException e) {
                     Platform.runLater(() -> showDialog("提示", e.getMessage()));
                 } catch (Exception e) {
