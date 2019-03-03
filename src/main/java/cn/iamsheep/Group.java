@@ -35,7 +35,7 @@ public class Group implements Serializable {
      * @param name 学生名字
      * @return boolean
      */
-    private boolean isExistStudent(String name) {
+    public boolean isExistStudent(String name) {
         for (String s : studentsName) {
             if (name.equals(s)) return true;
         }
@@ -48,7 +48,7 @@ public class Group implements Serializable {
      * @param name 学生名字
      * @return Position
      */
-    private Position getPositionFromName(String name) {
+    public Position getPositionFromName(String name) {
         for (int i = 0; i < place.length; i++) {
             for (int j = 0; j < place[i].length; j++) {
                 if (place[i][j].equals(name)) return new Position(i, j);
@@ -234,7 +234,7 @@ public class Group implements Serializable {
     /**
      * 坐标类
      */
-    class Position {
+    public class Position {
         private int x;
         private int y;
 
