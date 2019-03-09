@@ -1,8 +1,9 @@
 package cn.iamsheep.api;
 
-import cn.iamsheep.Group;
 import cn.iamsheep.controller.Frame;
+import cn.iamsheep.util.Group;
 import cn.iamsheep.util.Mode;
+import cn.iamsheep.util.Student;
 import cn.iamsheep.util.UnicodeReader;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -68,6 +69,9 @@ public class Factory {
             consoleInfo.setValue("");
         }
 
+        /**
+         * 清除测试控制台页面内容
+         */
         public static void clearTestConsoleInfo() {
             testConsoleInfo.setValue("");
         }
@@ -85,6 +89,11 @@ public class Factory {
             return consoleInfo;
         }
 
+        /**
+         * 获取测试控制台消息缓存区的内容
+         *
+         * @return
+         */
         public static StringProperty getTestConsoleInfo() {
             return testConsoleInfo;
         }
@@ -93,8 +102,15 @@ public class Factory {
             return stage;
         }
 
-        public static Group readPlace() throws Exception {
-            FileInputStream fileIn = new FileInputStream("D://11/data.ser");
+        /**
+         * 从序列化文件中获取Group对象
+         *
+         * @param pathname 文件路径
+         * @return Group对象
+         * @throws Exception
+         */
+        public static Group readPlace(String pathname) throws Exception {
+            FileInputStream fileIn = new FileInputStream(pathname);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             Group group = (Group) in.readObject();
             in.close();
@@ -102,23 +118,38 @@ public class Factory {
             return group;
         }
 
-        public static void savePlace(Group group) throws Exception {
-            FileOutputStream fileOut = new FileOutputStream("D://11/data.ser");
+        /**
+         * 将Group对象序列化至硬盘
+         *
+         * @param group    Group对象
+         * @param fileName 文件名字
+         * @param path     文件路径
+         * @throws Exception
+         */
+        public static void savePlace(Group group, String fileName, String path) throws Exception {
+            FileOutputStream fileOut = new FileOutputStream(path + "/" + fileName);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(group);
             out.close();
             fileOut.close();
         }
 
-        public static ArrayList<String> readFile(String pathname) throws Exception {
+        /**
+         * 从学生名单文件中读取学生信息
+         *
+         * @param pathname 文件路径
+         * @return 学生对象集合
+         * @throws Exception
+         */
+        public static ArrayList<Student> readFile(String pathname) throws Exception {
             File file = new File(pathname);
-            ArrayList<String> studentsName = new ArrayList<>();
+            ArrayList<Student> studentsList = new ArrayList<>();
             BufferedReader bufferedReader = new BufferedReader(new UnicodeReader(new FileInputStream(file), Charset.defaultCharset().name()));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                studentsName.add(line);
+                studentsList.add(new Student(line, null));
             }
-            return studentsName;
+            return studentsList;
         }
 
         /**
@@ -156,7 +187,7 @@ public class Factory {
         }
 
         /**
-         * 向控制台页面输出字符串
+         * 向控制台页面输出单行字符串
          *
          * @param msg 输出内容
          */
@@ -164,23 +195,38 @@ public class Factory {
             Platform.runLater(() -> consoleInfo.setValue(consoleInfo.getValue() + msg + "\n"));
         }
 
+        /**
+         * 向测试控制台页面输出单行字符串
+         *
+         * @param msg 输出内容
+         */
         public static void testPrintln(String msg) {
             Platform.runLater(() -> testConsoleInfo.setValue(testConsoleInfo.getValue() + msg + "\n"));
         }
 
+        /**
+         * 向控制台页面输出字符串
+         *
+         * @param msg 输出内容
+         */
         public static void print(String msg) {
             Platform.runLater(() -> consoleInfo.setValue(consoleInfo.getValue() + msg));
         }
 
+        /**
+         * 向测试控制台页面输出字符串
+         *
+         * @param msg 输出内容
+         */
         public static void testPrint(String msg) {
             Platform.runLater(() -> testConsoleInfo.setValue(testConsoleInfo.getValue() + msg));
         }
 
         public static void print(Group group) {
-            String[][] place = group.getPlace();
-            for (String[] strings : place) {
-                for (int j = 0; j < strings.length; j++) {
-                    print(strings[j] + "　");
+            Student[][] place = group.getPlace();
+            for (Student[] students : place) {
+                for (int j = 0; j < place.length; j++) {
+                    print(students[j].getName() + "　");
                     if (((j + 1) % 3 == 0)) print("　　");
                 }
                 print("\n");
@@ -189,15 +235,14 @@ public class Factory {
         }
 
         public static void testPrint(Group group) {
-            String[][] place = group.getPlace();
-            for (String[] strings : place) {
-                for (int j = 0; j < strings.length; j++) {
-                    testPrint(strings[j] + "　");
+            Student[][] place = group.getPlace();
+            for (Student[] students : place) {
+                for (int j = 0; j < place.length; j++) {
+                    testPrint(students[j].getName() + "　");
                     if (((j + 1) % 3 == 0)) testPrint("　　");
                 }
                 testPrint("\n");
             }
-            testPrint("\n");
         }
 
         /**

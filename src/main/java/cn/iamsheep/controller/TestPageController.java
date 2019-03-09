@@ -1,8 +1,9 @@
 package cn.iamsheep.controller;
 
-import cn.iamsheep.Group;
 import cn.iamsheep.api.Factory;
 import cn.iamsheep.api.UIHandler;
+import cn.iamsheep.util.Group;
+import cn.iamsheep.util.GroupHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
@@ -53,16 +54,15 @@ public class TestPageController implements UIHandler {
         container.setMaxWidth(Factory.UIData.getScreenWidth());
         container.setMaxHeight(Factory.UIData.getScreenHeight());
 
-        testGroup = Factory.UIData.readPlace();
+        testGroup = Factory.UIData.readPlace("D://11/data.ser");
         console.textProperty().bind(Factory.UIData.getTestConsoleInfo());
 
-        testGroup = Factory.UIData.readPlace();
         resize();
         sync();
 
         sync.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> new Thread(() -> {
             try {
-                testGroup.sync(Factory.mode);
+                new GroupHandler(Factory.group).sync(Factory.mode);
                 sync();
             } catch (Exception e) {
                 Platform.runLater(() -> showDialog("Exception", e.getMessage()));
@@ -71,7 +71,7 @@ public class TestPageController implements UIHandler {
 
         reset.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
-                testGroup = Factory.UIData.readPlace();
+                testGroup = Factory.UIData.readPlace("D://11/data.ser");
                 sync();
             } catch (Exception e) {
                 showDialog("Exception", e.getMessage());
