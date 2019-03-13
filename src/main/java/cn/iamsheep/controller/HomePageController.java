@@ -7,9 +7,7 @@ import cn.iamsheep.util.GroupHandler;
 import com.jfoenix.controls.*;
 import io.datafx.controller.ViewController;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -60,7 +58,7 @@ public class HomePageController implements UIHandler {
         resize();
         sync();
 
-        sync.addEventHandler(MouseEvent.MOUSE_CLICKED, this::showPasswordDialog);
+        sync.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showPasswordDialog());
         backup.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showDialog("提示", "功能未完成！"));
         exchange.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showExchangeDialog());
     }
@@ -97,7 +95,7 @@ public class HomePageController implements UIHandler {
     /**
      * 请求输入密钥
      */
-    private void showPasswordDialog(MouseEvent mouseEvent) {
+    private void showPasswordDialog() {
         JFXButton ok = new JFXButton("确定");
         JFXPasswordField passwordField = new JFXPasswordField();
         ok.setPrefSize(70, 35);
@@ -109,7 +107,7 @@ public class HomePageController implements UIHandler {
         dialog.show();
         ok.setOnAction(event -> {
             if (passwordField.getText().equals("52304")) {
-                new Thread(() -> continueToSync(mouseEvent)).start();
+                Platform.runLater(() -> continueToSync());
             } else {
                 showDialog("提示", "密钥错误！");
             }
@@ -120,7 +118,7 @@ public class HomePageController implements UIHandler {
     /**
      * 通过密钥验证后继续执行生成
      */
-    private void continueToSync(MouseEvent mouseEvent) {
+    private void continueToSync() {
         password = "";
         try {
             new GroupHandler(Factory.group).sync(Factory.mode);

@@ -125,7 +125,7 @@ public class GroupHandler {
         ArrayList<Student> temp = new ArrayList<>(Arrays.asList(newGroupTwo));
         for (int i = 0; i < place.length; i++) {
             for (int j = 0; j < place[i].length; j++) {
-                int groupNum = Math.abs(j % 3 - 3);
+                int groupNum = Math.abs((j / 3) - 3);
                 if (i == 5 && j == 8) continue;
                 if (i == 6 && j == 2) break;
                 if (groupNum == 3) {

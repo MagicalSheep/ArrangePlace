@@ -110,11 +110,9 @@ public class Factory {
          * @throws Exception
          */
         public static Group readPlace(String pathname) throws Exception {
-            FileInputStream fileIn = new FileInputStream(pathname);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(pathname)));
             Group group = (Group) in.readObject();
             in.close();
-            fileIn.close();
             return group;
         }
 
@@ -127,11 +125,9 @@ public class Factory {
          * @throws Exception
          */
         public static void savePlace(Group group, String fileName, String path) throws Exception {
-            FileOutputStream fileOut = new FileOutputStream(path + "/" + fileName);
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(path + "/" + fileName)));
             out.writeObject(group);
             out.close();
-            fileOut.close();
         }
 
         /**
@@ -225,7 +221,7 @@ public class Factory {
         public static void print(Group group) {
             Student[][] place = group.getPlace();
             for (Student[] students : place) {
-                for (int j = 0; j < place.length; j++) {
+                for (int j = 0; j < students.length; j++) {
                     print(students[j].getName() + "　");
                     if (((j + 1) % 3 == 0)) print("　　");
                 }
@@ -237,7 +233,7 @@ public class Factory {
         public static void testPrint(Group group) {
             Student[][] place = group.getPlace();
             for (Student[] students : place) {
-                for (int j = 0; j < place.length; j++) {
+                for (int j = 0; j < students.length; j++) {
                     testPrint(students[j].getName() + "　");
                     if (((j + 1) % 3 == 0)) testPrint("　　");
                 }

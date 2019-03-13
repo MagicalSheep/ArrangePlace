@@ -4,6 +4,7 @@ import cn.iamsheep.api.Factory;
 import cn.iamsheep.api.UIHandler;
 import cn.iamsheep.controller.Frame;
 import cn.iamsheep.util.Group;
+import cn.iamsheep.util.Student;
 import com.jfoenix.controls.JFXDecorator;
 import io.datafx.controller.context.FXMLViewContext;
 import io.datafx.controller.flow.Flow;
@@ -25,7 +26,7 @@ public class Entrance extends Application {
 
     public static void main(String[] args) throws Exception {
         if (new File("D://11/data.ser").exists()) {
-            Factory.group = Factory.UIData.readPlace(namePath);
+            Factory.group = Factory.UIData.readPlace("D://11/data.ser");
         } else {
             Factory.group = new Group(Factory.UIData.readFile(namePath));
             Factory.UIData.savePlace(Factory.group,"data.ser","D://11");
