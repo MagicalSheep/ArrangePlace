@@ -3,6 +3,7 @@ package cn.iamsheep;
 import cn.iamsheep.api.Factory;
 import cn.iamsheep.api.UIHandler;
 import cn.iamsheep.controller.Frame;
+import cn.iamsheep.util.Group;
 import com.jfoenix.controls.JFXDecorator;
 import io.datafx.controller.context.FXMLViewContext;
 import io.datafx.controller.flow.Flow;
@@ -12,7 +13,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.File;
 
 public class Entrance extends Application {
 
@@ -24,30 +25,14 @@ public class Entrance extends Application {
 
     public static void main(String[] args) throws Exception {
         if (new File("D://11/data.ser").exists()) {
-            Factory.group = Factory.UIData.readPlace();
+            Factory.group = Factory.UIData.readPlace(namePath);
         } else {
             Factory.group = new Group(Factory.UIData.readFile(namePath));
-            Factory.UIData.savePlace(Factory.group);
+            Factory.UIData.savePlace(Factory.group,"data.ser","D://11");
         }
         launch(args);
         System.exit(0);
 
-    }
-
-    private static void exchange() throws Exception {
-//        System.out.println("\n请输入要调换座位的两个姓名（两个名字之间用空格分开）：\n");
-//        String nameOne = scanner.next();
-//        String nameTwo = scanner.next();
-//        if (Factory.UIData.getChineseSize(nameOne) == 2) nameOne = nameOne + "　";
-//        if (Factory.UIData.getChineseSize(nameTwo) == 2) nameTwo = nameTwo + "　";
-//        try {
-//            Factory.group.exchange(nameOne, nameTwo);
-//            System.out.println("\n座位调换成功！");
-//            Factory.UIData.savePlace(Factory.group);
-//            System.out.println("座位表已保存至本地！\n");
-//        } catch (Group.ExchangeException e) {
-//            System.out.println("\n" + e.getMessage() + "\n");
-//        }
     }
 
     @Override

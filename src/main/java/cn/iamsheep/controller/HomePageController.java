@@ -3,6 +3,7 @@ package cn.iamsheep.controller;
 import cn.iamsheep.Group;
 import cn.iamsheep.api.Factory;
 import cn.iamsheep.api.UIHandler;
+import cn.iamsheep.util.GroupHandler;
 import com.jfoenix.controls.*;
 import io.datafx.controller.ViewController;
 import javafx.application.Platform;
@@ -122,8 +123,8 @@ public class HomePageController implements UIHandler {
     private void continueToSync(MouseEvent mouseEvent) {
         password = "";
         try {
-            Factory.group.sync(Factory.mode);
-            Factory.UIData.savePlace(Factory.group);
+            new GroupHandler(Factory.group).sync(Factory.mode);
+            Factory.UIData.savePlace(Factory.group,"data.ser","D://11");
             sync();
         } catch (Exception e) {
             showDialog("Exception", e.getMessage());
@@ -151,9 +152,9 @@ public class HomePageController implements UIHandler {
                     String nameTwo = name[1];
                     if (Factory.UIData.getChineseSize(nameOne) == 2) nameOne = nameOne + "　";
                     if (Factory.UIData.getChineseSize(nameTwo) == 2) nameTwo = nameTwo + "　";
-                    Factory.group.exchange(nameOne, nameTwo);
+                    new GroupHandler(Factory.group).exchange(nameOne, nameTwo);
                     Platform.runLater(() -> showDialog("提示", "座位调换成功！"));
-                    Factory.UIData.savePlace(Factory.group);
+                    Factory.UIData.savePlace(Factory.group, "data.ser", "D://11");
                     sync();
                 } catch (Group.ExchangeException e) {
                     Platform.runLater(() -> showDialog("提示", e.getMessage()));
