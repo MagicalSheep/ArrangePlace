@@ -112,14 +112,24 @@ public class GroupHandler {
             }
         }
         for (int i = 0; i < newGroupThree.length; i++) {
-            if (random.nextBoolean() && groupOneList.size() != 0) {
-                ranIndex = random.nextInt(groupOneList.size());
-                newGroupThree[i] = groupOneList.get(ranIndex);
-                groupOneList.remove(ranIndex);
-            }else{
+            if(!groupOneList.isEmpty()&&!groupTwoList.isEmpty()){
+                if(random.nextBoolean()){
+                    ranIndex = random.nextInt(groupOneList.size());
+                    newGroupThree[i] = groupOneList.get(ranIndex);
+                    groupOneList.remove(ranIndex);
+                }else{
+                    ranIndex = random.nextInt(groupTwoList.size());
+                    newGroupThree[i] = groupTwoList.get(ranIndex);
+                    groupTwoList.remove(ranIndex);
+                }
+            }else if(groupOneList.isEmpty()){
                 ranIndex = random.nextInt(groupTwoList.size());
                 newGroupThree[i] = groupTwoList.get(ranIndex);
                 groupTwoList.remove(ranIndex);
+            }else{
+                ranIndex = random.nextInt(groupOneList.size());
+                newGroupThree[i] = groupOneList.get(ranIndex);
+                groupOneList.remove(ranIndex);
             }
         }
         ArrayList<Student> temp = new ArrayList<>(Arrays.asList(newGroupTwo));

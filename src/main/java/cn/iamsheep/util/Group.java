@@ -24,9 +24,9 @@ public class Group implements Serializable {
                     Student student = studentsList.get(index++);
                     student.setPosition(new Position(i, j));
                     place[i][j] = student;
-                    if (j % 3 == 0) {
+                    if (j / 3 == 0) {
                         groupThreeList.add(student);
-                    } else if (j % 3 == 1) {
+                    } else if (j / 3 == 1) {
                         groupTwoList.add(student);
                     } else {
                         groupOneList.add(student);
@@ -64,13 +64,16 @@ public class Group implements Serializable {
     }
 
     private void update() {
+        groupThreeList.clear();
+        groupTwoList.clear();
+        groupOneList.clear();
         for (int i = 0; i < place.length; i++) {
             for (int j = 0; j < place[i].length; j++) {
                 if (i == 5 && j == 8) continue;
                 if (i == 6 && j == 2) break;
-                if (j % 3 == 0) {
+                if (j / 3 == 0) {
                     groupThreeList.add(place[i][j]);
-                } else if (j % 3 == 1) {
+                } else if (j / 3 == 1) {
                     groupTwoList.add(place[i][j]);
                 } else {
                     groupOneList.add(place[i][j]);
