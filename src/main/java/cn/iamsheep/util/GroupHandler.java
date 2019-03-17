@@ -67,7 +67,9 @@ public class GroupHandler {
                 while (!studentsList.isEmpty()) {
                     ranIndex = random.nextInt(studentsList.size());
                     ranStudent = studentsList.get(ranIndex);
-                    if (!isEqualsOneof(ranStudent, getLastStudentList(new Position(i, j))) || count == 1000) {
+                    int x = ranStudent.getPosition().getX();
+                    int y = ranStudent.getPosition().getY();
+                    if (!((j == (y - 1) && i == (x - 1)) || (j == (y - 1) && i == (x + 1)) || (j == (y + 1) && i == (x - 1)) || (j == (y + 1) && i == (x + 1)) || (j == y && i == (x - 1)) || (j == y && i == (x + 1))) || count == 5000) {
                         place[i][j] = ranStudent;
                         studentsList.remove(ranIndex);
                         break;
@@ -91,45 +93,29 @@ public class GroupHandler {
         Student[] newGroupThree =new Student[groupThreeList.size()];
         for (int i = 0; i < newGroupOne.length; i++) {
             if (random.nextBoolean()) {
-                ranIndex = random.nextInt(groupTwoList.size());
-                newGroupOne[i] = groupTwoList.get(ranIndex);
-                groupTwoList.remove(ranIndex);
+                newGroupOne[i] = getRanStudent(2);
             } else {
-                ranIndex = random.nextInt(groupThreeList.size());
-                newGroupOne[i] = groupThreeList.get(ranIndex);
-                groupThreeList.remove(ranIndex);
+                newGroupOne[i] = getRanStudent(3);
             }
         }
         for (int i = 0; i < newGroupTwo.length; i++) {
-            if(groupThreeList.size()!= 0){
-                ranIndex = random.nextInt(groupThreeList.size());
-                newGroupTwo[i] = groupThreeList.get(ranIndex);
-                groupThreeList.remove(ranIndex);
+            if (!groupThreeList.isEmpty()) {
+                newGroupTwo[i] = getRanStudent(3);
             }else{
-                ranIndex = random.nextInt(groupOneList.size());
-                newGroupTwo[i] = groupOneList.get(ranIndex);
-                groupOneList.remove(ranIndex);
+                newGroupTwo[i] = getRanStudent(1);
             }
         }
         for (int i = 0; i < newGroupThree.length; i++) {
             if(!groupOneList.isEmpty()&&!groupTwoList.isEmpty()){
                 if(random.nextBoolean()){
-                    ranIndex = random.nextInt(groupOneList.size());
-                    newGroupThree[i] = groupOneList.get(ranIndex);
-                    groupOneList.remove(ranIndex);
+                    newGroupThree[i] = getRanStudent(1);
                 }else{
-                    ranIndex = random.nextInt(groupTwoList.size());
-                    newGroupThree[i] = groupTwoList.get(ranIndex);
-                    groupTwoList.remove(ranIndex);
+                    newGroupThree[i] = getRanStudent(2);
                 }
             }else if(groupOneList.isEmpty()){
-                ranIndex = random.nextInt(groupTwoList.size());
-                newGroupThree[i] = groupTwoList.get(ranIndex);
-                groupTwoList.remove(ranIndex);
+                newGroupThree[i] = getRanStudent(2);
             }else{
-                ranIndex = random.nextInt(groupOneList.size());
-                newGroupThree[i] = groupOneList.get(ranIndex);
-                groupOneList.remove(ranIndex);
+                newGroupThree[i] = getRanStudent(1);
             }
         }
         ArrayList<Student> temp = new ArrayList<>(Arrays.asList(newGroupTwo));
@@ -150,6 +136,31 @@ public class GroupHandler {
             }
         }
         group.setPlace(place);
+    }
+
+    private Student getRanStudent(int groupListNum){
+        Random random = new Random();
+        int ranIndex;
+        Student result;
+        switch (groupListNum) {
+            case 1:
+                ranIndex = random.nextInt(groupOneList.size());
+                result = groupOneList.get(ranIndex);
+                groupOneList.remove(ranIndex);
+                return result;
+            case 2:
+                ranIndex = random.nextInt(groupTwoList.size());
+                result = groupTwoList.get(ranIndex);
+                groupTwoList.remove(ranIndex);
+                return result;
+            case 3:
+                ranIndex = random.nextInt(groupThreeList.size());
+                result = groupThreeList.get(ranIndex);
+                groupThreeList.remove(ranIndex);
+                return result;
+            default:
+                return null;
+        }
     }
 
     /**
