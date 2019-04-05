@@ -1,6 +1,5 @@
 package cn.iamsheep.controller;
 
-import cn.iamsheep.Group;
 import cn.iamsheep.api.Factory;
 import cn.iamsheep.api.UIHandler;
 import cn.iamsheep.util.GroupHandler;
@@ -20,10 +19,8 @@ import javax.annotation.PostConstruct;
  * @author Magical Sheep
  */
 @ViewController(value = "/page/HomePage.fxml", title = "Home")
-public class HomePageController implements UIHandler {
+public class HomePageController extends UIHandler {
 
-    @FXML
-    private StackPane root;
     @FXML
     private JFXTextArea console;
     @FXML
@@ -76,20 +73,7 @@ public class HomePageController implements UIHandler {
     @Override
     public void sync() {
         Factory.UIData.clearConsoleInfo();
-        Factory.UI.print(Factory.group);
-    }
-
-    @Override
-    public void showDialog(String heading, String body) {
-        JFXButton ok = new JFXButton("确定");
-        ok.setPrefSize(70, 35);
-        JFXDialogLayout content = new JFXDialogLayout();
-        content.setHeading(new Text(heading));
-        content.setBody(new Text(body));
-        content.setActions(ok);
-        JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.BOTTOM);
-        dialog.show();
-        ok.setOnAction(event -> dialog.close());
+        Factory.UI.print(Factory.group, true);
     }
 
     /**
@@ -154,7 +138,7 @@ public class HomePageController implements UIHandler {
                     Platform.runLater(() -> showDialog("提示", "座位调换成功！"));
                     Factory.UIData.savePlace(Factory.group, "data.ser", "D://11");
                     sync();
-                } catch (Group.ExchangeException e) {
+                } catch (GroupHandler.ExchangeException e) {
                     Platform.runLater(() -> showDialog("提示", e.getMessage()));
                 } catch (Exception e) {
                     Platform.runLater(() -> showDialog("Exception", e.getMessage()));

@@ -218,12 +218,19 @@ public class Factory {
             Platform.runLater(() -> testConsoleInfo.setValue(testConsoleInfo.getValue() + msg));
         }
 
-        public static void print(Group group) {
+        public static void print(Group group, boolean isDelay) {
             Student[][] place = group.getPlace();
             for (Student[] students : place) {
                 for (int j = 0; j < students.length; j++) {
                     print(students[j].getName() + "　");
                     if (((j + 1) % 3 == 0)) print("　　");
+                    if (isDelay) {
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            getCurrentPage().showDialog("Exception", e.getMessage());
+                        }
+                    }
                 }
                 print("\n");
             }

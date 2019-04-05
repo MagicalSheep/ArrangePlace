@@ -20,10 +20,8 @@ import javax.annotation.PostConstruct;
  * @author Magical Sheep
  */
 @ViewController(value = "/page/SettingPage.fxml", title = "Setting")
-public class SettingPageController implements UIHandler {
+public class SettingPageController extends UIHandler {
 
-    @FXML
-    private StackPane root;
     @FXML
     private JFXCheckBox nine;
     @FXML
@@ -62,18 +60,5 @@ public class SettingPageController implements UIHandler {
     @Override
     public void sync() {
 
-    }
-
-    @Override
-    public void showDialog(String heading, String body) {
-        JFXButton ok = new JFXButton("确定");
-        ok.setPrefSize(70, 35);
-        JFXDialogLayout content = new JFXDialogLayout();
-        content.setHeading(new Text(heading));
-        content.setBody(new Text(body));
-        content.setActions(ok);
-        JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.BOTTOM);
-        dialog.show();
-        ok.setOnAction(event -> dialog.close());
     }
 }

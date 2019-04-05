@@ -1,5 +1,5 @@
 package cn.iamsheep.util;
 
-public enum Sex {
+public enum Sex{
     MALE,FEMALE
 }
