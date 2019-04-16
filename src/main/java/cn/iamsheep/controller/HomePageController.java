@@ -73,7 +73,7 @@ public class HomePageController extends UIHandler {
     @Override
     public void sync() {
         Factory.UIData.clearConsoleInfo();
-        Factory.UI.print(Factory.group, true);
+        Factory.UI.print(Factory.group);
     }
 
     /**
