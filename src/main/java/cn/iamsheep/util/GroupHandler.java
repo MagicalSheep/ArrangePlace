@@ -264,6 +264,7 @@ public class GroupHandler {
         } else {
             throw new ExchangeException("该学生不存在!");
         }
+        group.setPlace(place);
     }
 
     /**

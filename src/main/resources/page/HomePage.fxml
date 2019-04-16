@@ -24,6 +24,8 @@
                                style="-fx-font-size:14px;-fx-background-color:WHITE;"/>
                     <JFXButton fx:id="exchange" prefWidth="180" prefHeight="50" buttonType="RAISED" text="调换座位"
                                style="-fx-font-size:14px;-fx-background-color:WHITE;"/>
+                    <JFXButton fx:id="adminExchange" prefWidth="180" prefHeight="50" buttonType="RAISED" text="强制调换座位"
+                               style="-fx-font-size:14px;-fx-background-color:WHITE;"/>
                 </VBox>
             </right>
         </BorderPane>

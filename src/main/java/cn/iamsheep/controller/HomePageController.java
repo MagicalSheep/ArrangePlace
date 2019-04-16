@@ -6,6 +6,7 @@ import cn.iamsheep.util.GroupHandler;
 import com.jfoenix.controls.*;
 import io.datafx.controller.ViewController;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -29,6 +30,8 @@ public class HomePageController extends UIHandler {
     private JFXButton backup;
     @FXML
     private JFXButton exchange;
+    @FXML
+    private JFXButton adminExchange;
     @FXML
     private BorderPane container;
 
@@ -55,9 +58,10 @@ public class HomePageController extends UIHandler {
         resize();
         sync();
 
-        sync.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showPasswordDialog());
+        sync.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showPasswordDialog(1));
         backup.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showDialog("提示", "功能未完成！"));
         exchange.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showExchangeDialog());
+        adminExchange.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showPasswordDialog(2));
     }
 
     @Override
@@ -79,7 +83,7 @@ public class HomePageController extends UIHandler {
     /**
      * 请求输入密钥
      */
-    private void showPasswordDialog() {
+    private void showPasswordDialog(int mode) {
         JFXButton ok = new JFXButton("确定");
         JFXPasswordField passwordField = new JFXPasswordField();
         ok.setPrefSize(70, 35);
@@ -91,10 +95,49 @@ public class HomePageController extends UIHandler {
         dialog.show();
         ok.setOnAction(event -> {
             if (passwordField.getText().equals("52304")) {
-                Platform.runLater(() -> continueToSync());
+                if (mode == 1) {
+                    Platform.runLater(() -> continueToSync());
+                } else {
+                    Platform.runLater(() -> continueToExchange());
+                }
             } else {
                 showDialog("提示", "密钥错误！");
             }
+            dialog.close();
+        });
+    }
+
+    /**
+     * 通过验证后继续执行更换座位
+     */
+    private void continueToExchange(){
+        JFXButton ok = new JFXButton("确定");
+        JFXTextField nameField = new JFXTextField();
+        ok.setPrefSize(70, 35);
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text("请输入姓名（两个名字之间用空格分开）"));
+        content.setBody(nameField);
+        content.setActions(ok);
+        JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.BOTTOM);
+        dialog.show();
+        ok.setOnAction(event -> {
+            new Thread(() -> {
+                try {
+                    String[] name = nameField.getText().split(" ");
+                    String nameOne = name[0];
+                    String nameTwo = name[1];
+                    if (Factory.UIData.getChineseSize(nameOne) == 2) nameOne = nameOne + "　";
+                    if (Factory.UIData.getChineseSize(nameTwo) == 2) nameTwo = nameTwo + "　";
+                    new GroupHandler(Factory.group).adminExchange(nameOne, nameTwo);
+                    Platform.runLater(() -> showDialog("提示", "座位调换成功！"));
+                    Factory.UIData.savePlace(Factory.group, "data.ser", "D://11");
+                    sync();
+                } catch (GroupHandler.ExchangeException e) {
+                    Platform.runLater(() -> showDialog("提示", e.getMessage()));
+                } catch (Exception e) {
+                    Platform.runLater(() -> showDialog("Exception", e.getMessage()));
+                }
+            }).start();
             dialog.close();
         });
     }
