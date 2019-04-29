@@ -1,4 +1,4 @@
-package cn.iamsheep.util;
+package cn.iamsheep.base;
 
 import java.io.Serializable;
 

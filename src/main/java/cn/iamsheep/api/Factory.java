@@ -3,7 +3,7 @@ package cn.iamsheep.api;
 import cn.iamsheep.controller.Frame;
 import cn.iamsheep.util.Group;
 import cn.iamsheep.util.Mode;
-import cn.iamsheep.util.Student;
+import cn.iamsheep.base.Student;
 import cn.iamsheep.util.UnicodeReader;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;

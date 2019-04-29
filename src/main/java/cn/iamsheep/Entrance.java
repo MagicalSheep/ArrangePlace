@@ -4,7 +4,6 @@ import cn.iamsheep.api.Factory;
 import cn.iamsheep.api.UIHandler;
 import cn.iamsheep.controller.Frame;
 import cn.iamsheep.util.Group;
-import cn.iamsheep.util.Student;
 import com.jfoenix.controls.JFXDecorator;
 import io.datafx.controller.context.FXMLViewContext;
 import io.datafx.controller.flow.Flow;

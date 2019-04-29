@@ -1,5 +1,8 @@
 package cn.iamsheep.util;
 
+import cn.iamsheep.base.Position;
+import cn.iamsheep.base.Student;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 

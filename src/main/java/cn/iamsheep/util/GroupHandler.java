@@ -1,5 +1,8 @@
 package cn.iamsheep.util;
 
+import cn.iamsheep.base.Position;
+import cn.iamsheep.base.Student;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
