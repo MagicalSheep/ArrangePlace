@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXRippler?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXToolbar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<StackPane fx:id="root"
+           xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml">
+    <!-- Header -->
+    <BorderPane>
+        <top>
+            <VBox spacing="20">
+                <JFXToolbar fx:id="toolbar">
+                    <leftItems>
+                        <Label style="-fx-padding: 0 0 0 10">配置</Label>
+                    </leftItems>
+                    <rightItems>
+                        <JFXRippler fx:id="saveRippler" maskType="RECT"
+                                    style="-fx-ripple-color:WHITE;">
+                            <StackPane style="-fx-padding:0 10 0 10" fx:id="saveBurger">
+                                <ImageView fitWidth="25" fitHeight="25" fx:id="save"/>
+                            </StackPane>
+                        </JFXRippler>
+                    </rightItems>
+                </JFXToolbar>
+            </VBox>
+        </top>
+
+        <!-- Content Area -->
+        <center>
+            <JFXTextArea fx:id="jfxTextArea" style="-fx-padding: 5 5 5 5;-fx-font-size: 15px">
+            </JFXTextArea>
+        </center>
+    </BorderPane>
+</StackPane>

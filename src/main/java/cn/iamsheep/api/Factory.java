@@ -1,18 +1,17 @@
 package cn.iamsheep.api;
 
-import cn.iamsheep.controller.Frame;
-import cn.iamsheep.util.Group;
-import cn.iamsheep.util.Mode;
-import cn.iamsheep.base.Student;
-import cn.iamsheep.util.UnicodeReader;
+import cn.iamsheep.ui.Frame;
+import cn.iamsheep.model.SeatDiagram;
+import cn.iamsheep.model.Student;
+import cn.iamsheep.ui.HomePageController;
+import cn.iamsheep.ui.SideMenuController;
+import cn.iamsheep.util.SeatHandler;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.stage.Stage;
 
-import java.io.*;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
+import java.io.IOException;
 
 /**
  * @author Magical Sheep
@@ -20,20 +19,24 @@ import java.util.ArrayList;
 public class Factory {
 
     private static Stage stage;
-    private static UIHandler currentPage = null;
+    private static HomePageController homePageController = null;
+    private static SideMenuController sideMenuController = null;
+    private static Frame frame = null;
     private static StringProperty consoleInfo;
-    private static StringProperty testConsoleInfo;
 
-    public static Mode mode = Mode.NINE;
-
-    public static Group group = null;
+    public static SeatHandler seatHandler;
 
     private Factory() {
     }
 
     static {
         consoleInfo = new SimpleStringProperty("");
-        testConsoleInfo = new SimpleStringProperty("");
+        try {
+            seatHandler = new SeatHandler();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            UI.showDialog("Exception", e.getMessage());
+        }
     }
 
     public static class UIData {
@@ -41,25 +44,16 @@ public class Factory {
         public final static double LRSpacing = 30; // 控件左右间距
         public final static double TBSpacing = 20; // 控件上下间距
 
-        /**
-         * 获取内容中汉字个数
-         *
-         * @param content 内容
-         * @return int
-         */
-        public static int getChineseSize(String content) {
-            String regex = "[\u4e00-\u9fa5]";
-            return content.length() - content.replaceAll(regex, "").length();
+        public static void regHomePage(HomePageController page) {
+            homePageController = page;
         }
 
-        /**
-         * 注册页面
-         *
-         * @param page 当前页面
-         */
-        public static void regPage(UIHandler page) {
-            if (currentPage != null) currentPage.release();
-            currentPage = page;
+        public static void regSideMenu(SideMenuController controller){
+            sideMenuController = controller;
+        }
+
+        public static void regFrame(Frame fr){
+            frame = fr;
         }
 
         /**
@@ -67,13 +61,6 @@ public class Factory {
          */
         public static void clearConsoleInfo() {
             consoleInfo.setValue("");
-        }
-
-        /**
-         * 清除测试控制台页面内容
-         */
-        public static void clearTestConsoleInfo() {
-            testConsoleInfo.setValue("");
         }
 
         public static void setStage(Stage stage1) {
@@ -89,63 +76,8 @@ public class Factory {
             return consoleInfo;
         }
 
-        /**
-         * 获取测试控制台消息缓存区的内容
-         *
-         * @return
-         */
-        public static StringProperty getTestConsoleInfo() {
-            return testConsoleInfo;
-        }
-
         public static Stage getStage() {
             return stage;
-        }
-
-        /**
-         * 从序列化文件中获取Group对象
-         *
-         * @param pathname 文件路径
-         * @return Group对象
-         * @throws Exception
-         */
-        public static Group readPlace(String pathname) throws Exception {
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(pathname)));
-            Group group = (Group) in.readObject();
-            in.close();
-            return group;
-        }
-
-        /**
-         * 将Group对象序列化至硬盘
-         *
-         * @param group    Group对象
-         * @param fileName 文件名字
-         * @param path     文件路径
-         * @throws Exception
-         */
-        public static void savePlace(Group group, String fileName, String path) throws Exception {
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(path + "/" + fileName)));
-            out.writeObject(group);
-            out.close();
-        }
-
-        /**
-         * 从学生名单文件中读取学生信息
-         *
-         * @param pathname 文件路径
-         * @return 学生对象集合
-         * @throws Exception
-         */
-        public static ArrayList<Student> readFile(String pathname) throws Exception {
-            File file = new File(pathname);
-            ArrayList<Student> studentsList = new ArrayList<>();
-            BufferedReader bufferedReader = new BufferedReader(new UnicodeReader(new FileInputStream(file), Charset.defaultCharset().name()));
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                studentsList.add(new Student(line, null));
-            }
-            return studentsList;
         }
 
         /**
@@ -173,13 +105,16 @@ public class Factory {
 
     public static class UI {
 
-        /**
-         * 获取当前页面的Controller对象
-         *
-         * @return UIHandler
-         */
-        public static UIHandler getCurrentPage() {
-            return currentPage;
+        public static HomePageController getHomePage() {
+            return homePageController;
+        }
+
+        public static SideMenuController getSideMenu() {
+            return sideMenuController;
+        }
+
+        public static Frame getFrame(){
+            return frame;
         }
 
         /**
@@ -192,15 +127,6 @@ public class Factory {
         }
 
         /**
-         * 向测试控制台页面输出单行字符串
-         *
-         * @param msg 输出内容
-         */
-        public static void testPrintln(String msg) {
-            Platform.runLater(() -> testConsoleInfo.setValue(testConsoleInfo.getValue() + msg + "\n"));
-        }
-
-        /**
          * 向控制台页面输出字符串
          *
          * @param msg 输出内容
@@ -209,17 +135,8 @@ public class Factory {
             Platform.runLater(() -> consoleInfo.setValue(consoleInfo.getValue() + msg));
         }
 
-        /**
-         * 向测试控制台页面输出字符串
-         *
-         * @param msg 输出内容
-         */
-        public static void testPrint(String msg) {
-            Platform.runLater(() -> testConsoleInfo.setValue(testConsoleInfo.getValue() + msg));
-        }
-
-        public static void print(Group group) {
-            Student[][] place = group.getPlace();
+        public static void print(SeatDiagram seatDiagram) {
+            Student[][] place = seatDiagram.getSeat();
             for (Student[] students : place) {
                 for (int j = 0; j < students.length; j++) {
                     print(students[j].getName() + "　");
@@ -230,17 +147,6 @@ public class Factory {
             print("\n");
         }
 
-        public static void testPrint(Group group) {
-            Student[][] place = group.getPlace();
-            for (Student[] students : place) {
-                for (int j = 0; j < students.length; j++) {
-                    testPrint(students[j].getName() + "　");
-                    if (((j + 1) % 3 == 0)) testPrint("　　");
-                }
-                testPrint("\n");
-            }
-        }
-
         /**
          * 向当前页面弹出Dialog
          *
@@ -248,7 +154,7 @@ public class Factory {
          * @param body    弹窗内容
          */
         public static void showDialog(String heading, String body) {
-            Platform.runLater(() -> currentPage.showDialog(heading, body));
+            Platform.runLater(() -> homePageController.showDialog(heading, body));
         }
 
     }

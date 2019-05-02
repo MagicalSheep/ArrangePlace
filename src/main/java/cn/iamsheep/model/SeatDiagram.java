@@ -1,32 +1,31 @@
-package cn.iamsheep.util;
+package cn.iamsheep.model;
 
-import cn.iamsheep.base.Position;
-import cn.iamsheep.base.Student;
+import cn.iamsheep.model.property.Position;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Group implements Serializable {
+public class SeatDiagram implements Serializable {
     private ArrayList<Student> studentsList;//学生名单
     private ArrayList<Student> groupOneList = new ArrayList<>();
     private ArrayList<Student> groupTwoList = new ArrayList<>();
     private ArrayList<Student> groupThreeList = new ArrayList<>();
-    private Student[][] place;//座位表
+    private Student[][] seat;//座位表
 
-    public Group(ArrayList<Student> studentsList) {
+    public SeatDiagram(ArrayList<Student> studentsList) {
         this.studentsList = studentsList;
-        this.place = new Student[7][9];
+        this.seat = new Student[7][9];
         int index = 0;
-        for (int i = 0; i < place.length; i++) {
-            for (int j = 0; j < place[i].length; j++) {
+        for (int i = 0; i < seat.length; i++) {
+            for (int j = 0; j < seat[i].length; j++) {
                 if (i == 5 && j == 8) {
-                    place[i][j] = new Student("　　　", null);
+                    seat[i][j] = new Student("　　　", null);
                     break;
                 }
                 if (index < studentsList.size()) {
                     Student student = studentsList.get(index++);
                     student.setPosition(new Position(i, j));
-                    place[i][j] = student;
+                    seat[i][j] = student;
                     if (j / 3 == 0) {
                         groupThreeList.add(student);
                     } else if (j / 3 == 1) {
@@ -35,7 +34,7 @@ public class Group implements Serializable {
                         groupOneList.add(student);
                     }
                 } else {
-                    place[i][j] = new Student("　　　", null);
+                    seat[i][j] = new Student("　　　", null);
                 }
             }
         } // 初始化座位表
@@ -57,12 +56,22 @@ public class Group implements Serializable {
         return studentsList;
     }
 
-    public Student[][] getPlace() {
-        return place;
+    public Student[][] getSeat() {
+        return seat;
     }
 
-    public void setPlace(Student[][] place) {
-        this.place = place;
+    public void setSeat(Student[][] place) {
+        this.seat = place;
+        update();
+    }
+
+    public void setSeat(int x, int y, Student student) {
+        seat[x][y] = student;
+        update();
+    }
+
+    public void setSeat(Position position, Student student) {
+        seat[position.getX()][position.getY()] = student;
         update();
     }
 
@@ -70,16 +79,16 @@ public class Group implements Serializable {
         groupThreeList.clear();
         groupTwoList.clear();
         groupOneList.clear();
-        for (int i = 0; i < place.length; i++) {
-            for (int j = 0; j < place[i].length; j++) {
+        for (int i = 0; i < seat.length; i++) {
+            for (int j = 0; j < seat[i].length; j++) {
                 if (i == 5 && j == 8) continue;
                 if (i == 6 && j == 2) break;
                 if (j / 3 == 0) {
-                    groupThreeList.add(place[i][j]);
+                    groupThreeList.add(seat[i][j]);
                 } else if (j / 3 == 1) {
-                    groupTwoList.add(place[i][j]);
+                    groupTwoList.add(seat[i][j]);
                 } else {
-                    groupOneList.add(place[i][j]);
+                    groupOneList.add(seat[i][j]);
                 }
             }
         }

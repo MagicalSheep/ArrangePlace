@@ -3,14 +3,14 @@ package cn.iamsheep.util;
 import java.io.*;
 
 public class UnicodeReader extends Reader {
-    PushbackInputStream internalIn;
-    InputStreamReader internalIn2 = null;
-    String defaultEnc;
+    private PushbackInputStream internalIn;
+    private InputStreamReader internalIn2 = null;
+    private String defaultEnc;
 
     private static final int BOM_SIZE = 4;
 
 
-    public UnicodeReader(InputStream in, String defaultEnc) {
+    UnicodeReader(InputStream in, String defaultEnc) {
         internalIn = new PushbackInputStream(in, BOM_SIZE);
         this.defaultEnc = defaultEnc;
     }
@@ -30,11 +30,11 @@ public class UnicodeReader extends Reader {
     }
 
 
-    protected void init() throws IOException {
+    private void init() throws IOException {
         if (internalIn2 != null) return;
 
         String encoding;
-        byte bom[] = new byte[BOM_SIZE];
+        byte[] bom = new byte[BOM_SIZE];
         int n, unread;
         n = internalIn.read(bom, 0, bom.length);
 
@@ -81,6 +81,17 @@ public class UnicodeReader extends Reader {
     public int read(char[] cbuf, int off, int len) throws IOException {
         init();
         return internalIn2.read(cbuf, off, len);
+    }
+
+    /**
+     * 获取内容中汉字个数
+     *
+     * @param content 内容
+     * @return int
+     */
+    public static int getChineseSize(String content) {
+        String regex = "[\u4e00-\u9fa5]";
+        return content.length() - content.replaceAll(regex, "").length();
     }
 
 }

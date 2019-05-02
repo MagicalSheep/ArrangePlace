@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXRippler?>
+<?import com.jfoenix.controls.JFXToolbar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import java.lang.String?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<StackPane fx:id="root"
+           xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           prefHeight="400.0" prefWidth="600.0">
+    <!-- Header -->
+    <BorderPane>
+        <top>
+            <VBox spacing="20">
+                <JFXToolbar fx:id="toolbar">
+                    <leftItems>
+                        <Label style="-fx-padding: 0 0 0 10">主页</Label>
+                    </leftItems>
+                    <rightItems>
+                        <HBox>
+                            <JFXRippler fx:id="openRippler" maskType="RECT"
+                                        style="-fx-ripple-color:WHITE;">
+                                <StackPane style="-fx-padding:0 10 0 10"  fx:id="openBurger">
+                                    <ImageView fitWidth="25" fitHeight="25" fx:id="open"/>
+                                </StackPane>
+                            </JFXRippler>
+                            <JFXRippler fx:id="exchangeRippler" maskType="RECT"
+                                        style="-fx-ripple-color:WHITE;">
+                                <StackPane style="-fx-padding:0 10 0 10" fx:id="exchangeBurger">
+                                    <ImageView fitWidth="25" fitHeight="25" fx:id="exchange"/>
+                                </StackPane>
+                            </JFXRippler>
+                            <JFXRippler fx:id="saveRippler" maskType="RECT"
+                                        style="-fx-ripple-color:WHITE;">
+                                <StackPane style="-fx-padding:0 10 0 10" fx:id="saveBurger">
+                                    <ImageView fitWidth="25" fitHeight="25" fx:id="save"/>
+                                </StackPane>
+                            </JFXRippler>
+                        </HBox>
+                        <JFXRippler fx:id="optionsRippler" maskType="RECT"
+                                    style="-fx-ripple-color:WHITE;">
+                            <StackPane fx:id="optionsBurger">
+                                <JFXHamburger fx:id="options" styleClass="jfx-options-burger"/>
+                            </StackPane>
+                        </JFXRippler>
+                    </rightItems>
+                </JFXToolbar>
+            </VBox>
+        </top>
+
+        <!-- Content Area -->
+        <center>
+            <JFXDrawer fx:id="drawer" defaultDrawerSize="250" direction="RIGHT">
+                <styleClass>
+                    <String fx:value="body"/>
+                </styleClass>
+            </JFXDrawer>
+        </center>
+    </BorderPane>
+</StackPane>

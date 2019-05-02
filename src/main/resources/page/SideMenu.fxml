@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.String?>
+<?import javafx.scene.layout.VBox?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.HBox?>
+<VBox spacing="20" fx:id="root" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+    <styleClass>
+        <String fx:value="side-menu"/>
+    </styleClass>
+    <VBox spacing="20" style="-fx-padding: 0 0 0 15;">
+        <JFXButton fx:id="build" prefWidth="180" prefHeight="50" buttonType="RAISED" text="生成新座位表"
+                   style="-fx-text-fill:WHITE;-fx-background-color:#008577;-fx-font-size:16px;"/>
+    </VBox>
+    <Separator/>
+    <VBox fx:id="propertiesPane" spacing="10" style="-fx-padding: 0 0 0 15;">
+    </VBox>
+    <HBox alignment="BASELINE_RIGHT">
+        <JFXButton fx:id="create" style="-fx-font-size: 13px;-fx-text-fill: #008577" text="自定义 →"/>
+    </HBox>
+
+</VBox>

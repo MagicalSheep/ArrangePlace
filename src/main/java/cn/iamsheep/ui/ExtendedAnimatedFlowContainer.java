@@ -1,4 +1,4 @@
-package cn.iamsheep.menu;
+package cn.iamsheep.ui;
 
 import io.datafx.controller.context.ViewContext;
 import io.datafx.controller.flow.FlowContainer;
@@ -41,7 +41,7 @@ public class ExtendedAnimatedFlowContainer extends AnimatedFlowContainer impleme
      *
      * @param duration the duration of the animation
      */
-    public ExtendedAnimatedFlowContainer(Duration duration) {
+    private ExtendedAnimatedFlowContainer(Duration duration) {
         this(duration, ContainerAnimations.FADE);
     }
 
@@ -61,7 +61,7 @@ public class ExtendedAnimatedFlowContainer extends AnimatedFlowContainer impleme
      * @param duration          the duration of the animation
      * @param animationProducer the {@link KeyFrame} instances that define the animation
      */
-    public ExtendedAnimatedFlowContainer(Duration duration, Function<AnimatedFlowContainer, List<KeyFrame>>
+    private ExtendedAnimatedFlowContainer(Duration duration, Function<AnimatedFlowContainer, List<KeyFrame>>
             animationProducer) {
         this.view = new StackPane();
         this.duration = duration;

@@ -1,4 +1,4 @@
-package cn.iamsheep.base;
+package cn.iamsheep.model.property;
 
 import java.io.Serializable;
 

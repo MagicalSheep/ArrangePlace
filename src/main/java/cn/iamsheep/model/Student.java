@@ -1,4 +1,7 @@
-package cn.iamsheep.base;
+package cn.iamsheep.model;
+
+import cn.iamsheep.model.property.Position;
+import cn.iamsheep.model.property.Sex;
 
 import java.io.Serializable;
 
