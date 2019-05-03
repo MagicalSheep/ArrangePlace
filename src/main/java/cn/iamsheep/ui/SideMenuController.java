@@ -43,6 +43,8 @@ public class SideMenuController {
     private VBox propertiesPane;
     @FXML
     private JFXButton create;
+    @FXML
+    private JFXButton reset;
 
     private Image settingImage;
     private Image deleteImage;
@@ -78,6 +80,8 @@ public class SideMenuController {
                 }
             }).start();
         });
+        create.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> create.setCursor(Cursor.HAND));
+        create.addEventHandler(MouseEvent.MOUSE_EXITED, event -> create.setCursor(Cursor.DEFAULT));
         create.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
                 int i = itemMap.size();
@@ -87,6 +91,16 @@ public class SideMenuController {
                 FileHandler.createProperties("新建规则" + i, "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1");
                 sync();
             } catch (IOException e) {
+                e.printStackTrace();
+                Factory.UI.showDialog("Exception", e.getMessage());
+            }
+        });
+        reset.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                seatHandler.init();
+                Factory.UIData.clearConsoleInfo();
+                Factory.UI.print(seatHandler.getResultSeat());
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 Factory.UI.showDialog("Exception", e.getMessage());
             }

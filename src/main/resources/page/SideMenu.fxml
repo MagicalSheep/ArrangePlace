@@ -12,6 +12,8 @@
     <VBox spacing="20" style="-fx-padding: 0 0 0 15;">
         <JFXButton fx:id="build" prefWidth="180" prefHeight="50" buttonType="RAISED" text="生成新座位表"
                    style="-fx-text-fill:WHITE;-fx-background-color:#008577;-fx-font-size:16px;"/>
+        <JFXButton fx:id="reset" prefWidth="180" prefHeight="50" buttonType="RAISED" text="重置"
+                   style="-fx-font-size:14px;-fx-background-color:WHITE;"/>
     </VBox>
     <Separator/>
     <VBox fx:id="propertiesPane" spacing="10" style="-fx-padding: 0 0 0 15;">
