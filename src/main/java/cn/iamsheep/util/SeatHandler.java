@@ -98,6 +98,30 @@ public class SeatHandler {
                 }
             }
         }
+        if (ruleMap.get("LastTimeBehindRow") != -1){
+            if(getPositionFromName(student.getName(), 1).getX() > (currentSeat.getSeat().length / 2)) {
+                if(ruleMap.get("LastTimeBehindRow") == 0) return 0;
+                if(selectedPos.getX() <= (currentSeat.getSeat().length / 2)) {
+                    weight += ruleMap.get("LastTimeBehindRow");
+                }
+            }
+        }
+        if (ruleMap.get("PreviousTimeBehindRow") != -1){
+            if(getPositionFromName(student.getName(), 2).getX() > (currentSeat.getSeat().length / 2)) {
+                if(ruleMap.get("PreviousTimeBehindRow") == 0) return 0;
+                if(selectedPos.getX() <= (currentSeat.getSeat().length / 2)) {
+                    weight += ruleMap.get("PreviousTimeBehindRow");
+                }
+            }
+        }
+        if (ruleMap.get("BeforePreviousTimeBehindRow") != -1){
+            if(getPositionFromName(student.getName(), 3).getX() > (currentSeat.getSeat().length / 2)) {
+                if(ruleMap.get("BeforePreviousTimeBehindRow") == 0) return 0;
+                if(selectedPos.getX() <= (currentSeat.getSeat().length / 2)) {
+                    weight += ruleMap.get("BeforePreviousTimeBehindRow");
+                }
+            }
+        }
         return weight;
     }
 

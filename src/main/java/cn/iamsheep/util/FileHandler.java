@@ -101,7 +101,7 @@ public class FileHandler {
             if (!propertiesDirectory.mkdir()) throw new IOException("Create the properties directory failed");
         }
         if (propertiesDirectory.listFiles().length <= 0) {
-            createProperties("默认规则", "0", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1");
+            createProperties("默认规则", "-1", "-1", "-1", "1", "1", "-1", "1", "1", "-1", "1", "1", "-1");
         }
         if (seatDataDirectory.listFiles().length <= 0) {
             SeatDiagram seatDiagram = new SeatDiagram(readFile(root + "\\name.txt"));
@@ -206,9 +206,12 @@ public class FileHandler {
      * @param lastTimeFrontRow 上一次在前排
      * @param previousTimeFrontRow 上上次在前排
      * @param beforePreviousTimeFrontRow 上上上次在前排
+     * @param lastTimeBehindRow 上一次在后排
+     * @param previousTimeBehindRow 上上次在后排
+     * @param beforePreviousTimeBehindRow 上上上次在后排
      * @throws IOException IOException
      */
-    public static void createProperties(String propertiesName, String lastTimeSameGroup, String previousTimeSameGroup, String beforePreviousTimeSameGroup, String lastTimeNotThisGroup, String previousTimeNotThisGroup, String beforePreviousTimeNotThisGroup, String lastTimeFrontRow, String previousTimeFrontRow, String beforePreviousTimeFrontRow) throws IOException {
+    public static void createProperties(String propertiesName, String lastTimeSameGroup, String previousTimeSameGroup, String beforePreviousTimeSameGroup, String lastTimeNotThisGroup, String previousTimeNotThisGroup, String beforePreviousTimeNotThisGroup, String lastTimeFrontRow, String previousTimeFrontRow, String beforePreviousTimeFrontRow, String lastTimeBehindRow, String previousTimeBehindRow, String beforePreviousTimeBehindRow) throws IOException {
         Properties properties = new Properties();
         properties.setProperty("PropertiesName", propertiesName);
         properties.setProperty("LastTimeSameGroup", lastTimeSameGroup);
@@ -220,6 +223,9 @@ public class FileHandler {
         properties.setProperty("LastTimeFrontRow", lastTimeFrontRow);
         properties.setProperty("PreviousTimeFrontRow", previousTimeFrontRow);
         properties.setProperty("BeforePreviousTimeFrontRow", beforePreviousTimeFrontRow);
+        properties.setProperty("LastTimeBehindRow", lastTimeBehindRow);
+        properties.setProperty("PreviousTimeBehindRow", previousTimeBehindRow);
+        properties.setProperty("BeforePreviousTimeBehindRow", beforePreviousTimeBehindRow);
         //使用Properties生成配置文件
         properties.store(new FileWriter(root + "\\Properties\\" + propertiesName + ".properties"), null);
     }

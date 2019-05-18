@@ -12,6 +12,9 @@ import javafx.beans.property.StringProperty;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * @author Magical Sheep
@@ -135,16 +138,25 @@ public class Factory {
             Platform.runLater(() -> consoleInfo.setValue(consoleInfo.getValue() + msg));
         }
 
-        public static void print(SeatDiagram seatDiagram) {
-            Student[][] place = seatDiagram.getSeat();
-            for (Student[] students : place) {
-                for (int j = 0; j < students.length; j++) {
-                    print(students[j].getName() + "　");
-                    if (((j + 1) % 3 == 0)) print("　　");
+        public static void print(SeatDiagram seatDiagram, boolean isAnimate) {
+            new Thread(() -> {
+                Student[][] place = seatDiagram.getSeat();
+                for (Student[] students : place) {
+                    for (int j = 0; j < students.length; j++) {
+                        print(students[j].getName() + "　");
+                        if (((j + 1) % 3 == 0)) print("　　");
+                        if (isAnimate) {
+                            try {
+                                Thread.sleep(350);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    print("\n");
                 }
                 print("\n");
-            }
-            print("\n");
+            }).start();
         }
 
         /**

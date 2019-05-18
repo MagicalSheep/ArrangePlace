@@ -42,6 +42,8 @@ public class SideMenuController {
     @FXML
     private VBox propertiesPane;
     @FXML
+    private JFXCheckBox anmation;
+    @FXML
     private JFXButton create;
     @FXML
     private JFXButton reset;
@@ -88,7 +90,7 @@ public class SideMenuController {
                 while(new File(FileHandler.root + "\\Properties\\新建规则" + i + ".properties").exists()){
                     i++;
                 }
-                FileHandler.createProperties("新建规则" + i, "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1");
+                FileHandler.createProperties("新建规则" + i, "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1");
                 sync();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -99,7 +101,7 @@ public class SideMenuController {
             try {
                 seatHandler.init();
                 Factory.UIData.clearConsoleInfo();
-                Factory.UI.print(seatHandler.getResultSeat());
+                Factory.UI.print(seatHandler.getResultSeat(), false);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 Factory.UI.showDialog("Exception", e.getMessage());
@@ -192,6 +194,6 @@ public class SideMenuController {
 
     private void refresh() {
         Factory.UIData.clearConsoleInfo();
-        Factory.UI.print(seatHandler.getResultSeat());
+        Factory.UI.print(seatHandler.getResultSeat(), anmation.isSelected());
     }
 }

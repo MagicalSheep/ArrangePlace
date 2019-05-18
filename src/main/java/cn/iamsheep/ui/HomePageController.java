@@ -79,7 +79,7 @@ public class HomePageController{
 
     private void sync() {
         Factory.UIData.clearConsoleInfo();
-        Factory.UI.print(seatHandler.getResultSeat());
+        Factory.UI.print(seatHandler.getResultSeat(), false);
     }
 
     /**

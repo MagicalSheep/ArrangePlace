@@ -89,7 +89,7 @@ public class Frame {
                     SeatDiagram seatDiagram = FileHandler.openSeatDiagram(seatFile);
                     Factory.UIData.clearConsoleInfo();
                     Factory.UI.println("你正在查看历史座位表：\n");
-                    Factory.UI.print(seatDiagram);
+                    Factory.UI.print(seatDiagram, false);
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                     Factory.UI.showDialog("Exception", e.getMessage());
@@ -98,18 +98,18 @@ public class Frame {
         });
         exchangeBurger.setOnMouseClicked(event -> {
             Factory.UIData.clearConsoleInfo();
-            Factory.UI.print(Factory.seatHandler.getResultSeat());
+            Factory.UI.print(Factory.seatHandler.getResultSeat(), false);
             Factory.UI.getHomePage().showExchangeDialog();
         });
         saveBurger.setOnMouseClicked(event -> {
             Factory.UIData.clearConsoleInfo();
-            Factory.UI.print(Factory.seatHandler.getResultSeat());
+            Factory.UI.print(Factory.seatHandler.getResultSeat(), false);
             Factory.UI.getHomePage().showSaveDialog();
         });
         optionsBurger.setOnMouseClicked(e -> {
             if (drawer.isClosed() || drawer.isClosing()) {
                 Factory.UIData.clearConsoleInfo();
-                Factory.UI.print(Factory.seatHandler.getResultSeat());
+                Factory.UI.print(Factory.seatHandler.getResultSeat(), false);
                 drawer.open();
             } else {
                 drawer.close();

@@ -5,6 +5,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <VBox spacing="20" fx:id="root" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
     <styleClass>
         <String fx:value="side-menu"/>
@@ -15,6 +17,15 @@
         <JFXButton fx:id="reset" prefWidth="180" prefHeight="50" buttonType="RAISED" text="重置"
                    style="-fx-font-size:14px;-fx-background-color:WHITE;"/>
     </VBox>
+    <Separator/>
+    <BorderPane>
+        <left>
+            <HBox style="-fx-padding: 0 0 0 15;">
+                <JFXCheckBox fx:id="anmation"></JFXCheckBox>
+                <Label text="动画"></Label>
+            </HBox>
+        </left>
+    </BorderPane>
     <Separator/>
     <VBox fx:id="propertiesPane" spacing="10" style="-fx-padding: 0 0 0 15;">
     </VBox>
