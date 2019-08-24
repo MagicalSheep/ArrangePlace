@@ -27,6 +27,8 @@ public class Factory {
     private static Frame frame = null;
     private static StringProperty consoleInfo;
 
+    private static boolean isPrinting = false;
+
     public static SeatHandler seatHandler;
 
     private Factory() {
@@ -59,11 +61,17 @@ public class Factory {
             frame = fr;
         }
 
+        public static void setPrintStatus(boolean flag){
+            isPrinting = flag;
+        }
+
+        public static boolean getPrintStatus(){return isPrinting;}
+
         /**
          * 清除控制台页面内容
          */
         public static void clearConsoleInfo() {
-            consoleInfo.setValue("");
+            if (!isPrinting) consoleInfo.setValue("");
         }
 
         public static void setStage(Stage stage1) {
@@ -139,24 +147,29 @@ public class Factory {
         }
 
         public static void print(SeatDiagram seatDiagram, boolean isAnimate) {
-            new Thread(() -> {
-                Student[][] place = seatDiagram.getSeat();
-                for (Student[] students : place) {
-                    for (int j = 0; j < students.length; j++) {
-                        print(students[j].getName() + "　");
-                        if (((j + 1) % 3 == 0)) print("　　");
-                        if (isAnimate) {
-                            try {
-                                Thread.sleep(350);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+            if (!isPrinting){
+                UIData.setPrintStatus(true);
+                new Thread(() -> {
+                    Student[][] place = seatDiagram.getSeat();
+                    for (Student[] students : place) {
+                        for (int j = 0; j < students.length; j++) {
+                            print(students[j].getName() + "　");
+                            if (((j + 1) % 3 == 0)) print("　　");
+                            if (isAnimate) {
+                                try {
+                                    Thread.sleep(350);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
+                        print("\n");
                     }
                     print("\n");
-                }
-                print("\n");
-            }).start();
+                    Factory.UIData.setPrintStatus(false);
+                }).start();
+            }
+
         }
 
         /**

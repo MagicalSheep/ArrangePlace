@@ -71,16 +71,18 @@ public class SideMenuController {
         deleteImage = new Image(String.valueOf(getClass().getClassLoader().getResource("icon/delete.png")));
         sync();
         build.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            Factory.UI.getFrame().getDrawer().close();
-            new Thread(() -> {
-                try {
-                    seatHandler.sync(FileHandler.loadRuleProperties(itemMap.get(selectedIndex).getPath()));
-                    Platform.runLater(this::refresh);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Platform.runLater(() -> Factory.UI.getHomePage().showDialog("Exception", e.getMessage()));
-                }
-            }).start();
+            if(!Factory.UIData.getPrintStatus()){
+                Factory.UI.getFrame().getDrawer().close();
+                new Thread(() -> {
+                    try {
+                        seatHandler.sync(FileHandler.loadRuleProperties(itemMap.get(selectedIndex).getPath()));
+                        Platform.runLater(this::refresh);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Platform.runLater(() -> Factory.UI.getHomePage().showDialog("Exception", e.getMessage()));
+                    }
+                }).start();
+            }
         });
         create.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> create.setCursor(Cursor.HAND));
         create.addEventHandler(MouseEvent.MOUSE_EXITED, event -> create.setCursor(Cursor.DEFAULT));
