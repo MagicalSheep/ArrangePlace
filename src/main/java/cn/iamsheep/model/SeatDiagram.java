@@ -82,6 +82,7 @@ public class SeatDiagram implements Serializable {
         for (int i = 0; i < seat.length; i++) {
             for (int j = 0; j < seat[i].length; j++) {
                 if (i == 5 && j == 8) continue;
+                if (seat[i][j].getName().equals("　　　")) break;
                 if (j / 3 == 0) {
                     groupThreeList.add(seat[i][j]);
                 } else if (j / 3 == 1) {

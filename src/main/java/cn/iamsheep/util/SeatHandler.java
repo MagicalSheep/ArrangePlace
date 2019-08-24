@@ -138,6 +138,7 @@ public class SeatHandler {
         for (int i = 0; i < resultSeat.getSeat().length; i++) {
             for (int j = 0; j < resultSeat.getSeat()[i].length; j++) {
                 if (i == 5 && j == 8) continue;
+                if (resultSeat.getSeat()[i][j].getName().equals("　　　")) break;
                 HashMap<Student, Integer> studentWeightMap = new HashMap<>(); // 学生 - 权重 临时列表
                 for (Student student : studentList) {
                     studentWeightMap.put(student, countWeight(student, new Position(i, j), ruleMap)); // 计算每位学生的权重，并放入临时列表
