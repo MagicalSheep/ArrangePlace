@@ -1,7 +1,8 @@
 package cn.iamsheep.api;
 
-import cn.iamsheep.ui.Frame;
 import cn.iamsheep.model.SeatDiagram;
+import cn.iamsheep.model.property.Position;
+import cn.iamsheep.ui.Frame;
 import cn.iamsheep.model.Student;
 import cn.iamsheep.ui.HomePageController;
 import cn.iamsheep.ui.SideMenuController;
@@ -12,9 +13,6 @@ import javafx.beans.property.StringProperty;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**
  * @author Magical Sheep
@@ -151,10 +149,16 @@ public class Factory {
                 UIData.setPrintStatus(true);
                 new Thread(() -> {
                     Student[][] place = seatDiagram.getSeat();
-                    for (Student[] students : place) {
-                        for (int j = 0; j < students.length; j++) {
-                            print(students[j].getName() + "　");
-                            if (((j + 1) % 3 == 0)) print("　　");
+                    for (int i = 0; i < place.length; i++) {
+                        for (int j = 0; j < place[i].length; j++) {
+                            if (j >= 1 && (seatDiagram.getGroupNum(i,j) != seatDiagram.getGroupNum(i,j - 1))) {
+                                print("　　");
+                            }
+                            if (seatDiagram.isEmptyPosition(new Position(i, j))){
+                                print("　　　　");
+                                continue;
+                            }
+                            print(place[i][j].getName() + "　");
                             if (isAnimate) {
                                 try {
                                     Thread.sleep(350);
@@ -167,6 +171,22 @@ public class Factory {
                     }
                     print("\n");
                     Factory.UIData.setPrintStatus(false);
+//                    for (Student[] students : place) {
+//                        for (int j = 0; j < students.length; j++) {
+//                            print(students[j].getName() + "　");
+//                            if (((j + 1) % 3 == 0)) print("　　");
+//                            if (isAnimate) {
+//                                try {
+//                                    Thread.sleep(350);
+//                                } catch (InterruptedException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        }
+//                        print("\n");
+//                    }
+//                    print("\n");
+//                    Factory.UIData.setPrintStatus(false);
                 }).start();
             }
 

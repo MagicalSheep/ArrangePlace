@@ -73,7 +73,7 @@ public class HomePageController{
     }
 
     public void resize() {
-        int size = (int) Factory.UIData.getScreenWidth() / 45;
+        int size = (int) Factory.UIData.getScreenWidth() / 48;
         console.setStyle("-fx-font-size:" + size + "px");
     }
 

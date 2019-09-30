@@ -21,4 +21,8 @@ public class Position implements Serializable {
     public int getY() {
         return y;
     }
+
+    public boolean equal(Position position) {
+        return x == position.getX() && y == position.getY();
+    }
 }

@@ -39,37 +39,37 @@ public class SeatHandler {
     private int countWeight(Student student, Position selectedPos, HashMap<String, Integer> ruleMap) throws Exception {
         int weight = 1;
         if (ruleMap.get("LastTimeSameGroup") != -1) {
-            if ((selectedPos.getY() / 3) == (getPositionFromName(student.getName(), 1).getY() / 3)) {
+            if (resultSeat.getGroupNum(selectedPos) == currentSeat.getGroupNum(student)) {
                 if (ruleMap.get("LastTimeSameGroup") == 0) return 0;
                 weight += ruleMap.get("LastTimeSameGroup");
             }
         }
         if (ruleMap.get("PreviousTimeSameGroup") != -1) {
-            if ((selectedPos.getY() / 3) == (getPositionFromName(student.getName(), 2).getY() / 3)) {
+            if (resultSeat.getGroupNum(selectedPos) == lastSeat.getGroupNum(student)) {
                 if (ruleMap.get("PreviousTimeSameGroup") == 0) return 0;
                 weight += ruleMap.get("PreviousTimeSameGroup");
             }
         }
         if (ruleMap.get("BeforePreviousTimeSameGroup") != -1) {
-            if ((selectedPos.getY() / 3) == (getPositionFromName(student.getName(), 3).getY() / 3)) {
+            if (resultSeat.getGroupNum(selectedPos) == previousSeat.getGroupNum(student)) {
                 if (ruleMap.get("BeforePreviousTimeSameGroup") == 0) return 0;
                 weight += ruleMap.get("BeforePreviousTimeSameGroup");
             }
         }
         if (ruleMap.get("LastTimeNotThisGroup") != -1) {
-            if ((selectedPos.getY() / 3) != (getPositionFromName(student.getName(), 1).getY() / 3)) {
+            if (resultSeat.getGroupNum(selectedPos) != currentSeat.getGroupNum(student)) {
                 if (ruleMap.get("LastTimeNotThisGroup") == 0) return 0;
                 weight += ruleMap.get("LastTimeNotThisGroup");
             }
         }
         if (ruleMap.get("PreviousTimeNotThisGroup") != -1) {
-            if ((selectedPos.getY() / 3) != (getPositionFromName(student.getName(), 2).getY() / 3)) {
+            if (resultSeat.getGroupNum(selectedPos) != lastSeat.getGroupNum(student)) {
                 if (ruleMap.get("PreviousTimeNotThisGroup") == 0) return 0;
                 weight += ruleMap.get("PreviousTimeNotThisGroup");
             }
         }
         if (ruleMap.get("BeforePreviousTimeNotThisGroup") != -1) {
-            if ((selectedPos.getY() / 3) != (getPositionFromName(student.getName(), 3).getY() / 3)) {
+            if (resultSeat.getGroupNum(selectedPos) != previousSeat.getGroupNum(student)) {
                 if (ruleMap.get("BeforePreviousTimeNotThisGroup") == 0) return 0;
                 weight += ruleMap.get("BeforePreviousTimeNotThisGroup");
             }
@@ -137,8 +137,7 @@ public class SeatHandler {
         // 开始遍历座位表
         for (int i = 0; i < resultSeat.getSeat().length; i++) {
             for (int j = 0; j < resultSeat.getSeat()[i].length; j++) {
-                if (i == 5 && j == 8) continue;
-                if (resultSeat.getSeat()[i][j].getName().equals("　　　")) break;
+                if (resultSeat.isEmptyPosition(new Position(i, j))) continue;
                 HashMap<Student, Integer> studentWeightMap = new HashMap<>(); // 学生 - 权重 临时列表
                 for (Student student : studentList) {
                     studentWeightMap.put(student, countWeight(student, new Position(i, j), ruleMap)); // 计算每位学生的权重，并放入临时列表
@@ -215,6 +214,7 @@ public class SeatHandler {
         }
         for (int i = 0; i < tempSeatDiagram.getSeat().length; i++) {
             for (int j = 0; j < tempSeatDiagram.getSeat()[i].length; j++) {
+                if (tempSeatDiagram.isEmptyPosition(new Position(i, j))) continue;
                 if (tempSeatDiagram.getSeat()[i][j].getName().equals(name)) return new Position(i, j);
             }
         }

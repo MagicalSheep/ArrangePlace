@@ -3,6 +3,7 @@ package cn.iamsheep.util;
 import cn.iamsheep.api.Factory;
 import cn.iamsheep.model.SeatDiagram;
 import cn.iamsheep.model.Student;
+import cn.iamsheep.model.property.Position;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -104,7 +105,9 @@ public class FileHandler {
             createProperties("默认规则", "-1", "-1", "-1", "1", "1", "-1", "1", "1", "-1", "1", "1", "-1");
         }
         if (seatDataDirectory.listFiles().length <= 0) {
-            SeatDiagram seatDiagram = new SeatDiagram(readFile(root + "\\name.txt"));
+            int[] groupColumn = {3, 4, 3};
+            Position[] emptyPosition = {new Position(0, 9), new Position(5, 8)};
+            SeatDiagram seatDiagram = new SeatDiagram(readFile(root + "\\name.txt"), 7, 10, 3, groupColumn, emptyPosition);
             saveSeatDiagram(seatDiagram);
         }
     }
