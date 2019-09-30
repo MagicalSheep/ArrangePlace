@@ -275,7 +275,7 @@ public class SeatHandler {
         if (isExistStudent(nameOne) && isExistStudent(nameTwo)) {
             Position one = getPositionFromName(nameOne);
             Position two = getPositionFromName(nameTwo);
-            if ((one.getX() == two.getX()) && ((one.getY() / 3) == (two.getY() / 3)) && Math.abs(one.getY() - two.getY()) <= 2) {
+            if ((one.getX() == two.getX()) && (resultSeat.getGroupNum(one) == resultSeat.getGroupNum(two))) {
                 Student temp = resultSeat.getSeat()[one.getX()][one.getY()];
                 resultSeat.setSeat(one, resultSeat.getSeat()[two.getX()][two.getY()]);
                 resultSeat.setSeat(two, temp);
